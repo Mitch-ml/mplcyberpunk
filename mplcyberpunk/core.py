@@ -79,3 +79,25 @@ def make_scatter_glow(ax=None, n_glow_lines=10, diff_dotwidth=1.2, alpha=0.3):
 
     for i in range(1, n_glow_lines):
         plt.scatter(x, y, s=dot_size*(diff_dotwidth**i), c=dot_color, alpha=alpha)
+
+
+def make_histstep_glow(ax=None, n_glow_lines=10, diff_linewidth=0.2, alpha=1):
+    """Add glow effect to lines of step type histogram
+    
+    Each plot is redrawn 10 times with increaseing line width and decreasing alpha to create glow effect."""
+    if not ax:
+        ax = plt.gca()
+    
+    p = ax.patches
+    for i in range(len(p)):
+        xy=p[i].get_xy()
+        x = [val[0] for val in xy]
+        y = [val[1] for val in xy]
+        line_color = p[i].get_facecolor()
+        
+        for j in range(1, n_glow_lines+1):
+            plt.step(x=x,
+                     y=y,
+                     c=line_color,
+                     lw=2+diff_linewidth*j,
+                     alpha=alpha/j)
